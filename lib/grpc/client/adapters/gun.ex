@@ -57,6 +57,7 @@ defmodule GRPC.Client.Adapters.Gun do
         open_opts
       end
 
+
     {:ok, conn_pid} = open(host, port, open_opts)
 
     case :gun.await_up(conn_pid) do
@@ -87,8 +88,16 @@ defmodule GRPC.Client.Adapters.Gun do
   defp open({:local, socket_path}, _port, open_opts),
     do: :gun.open_unix(socket_path, open_opts)
 
-  defp open(host, port, open_opts),
-    do: :gun.open(String.to_charlist(host), port, open_opts)
+  defp open(host, port, open_opts) do
+      open_opts = if(System.fetch_env!("ECTO_IPV6") == "true") do
+          open_opts ++ [:inet6]
+      else
+        open_opts
+      end
+
+      :gun.open(String.to_charlist(host), port, open_opts)
+  end
+
 
   @impl true
   def send_request(stream, message, opts) do
