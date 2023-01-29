@@ -91,7 +91,7 @@ defmodule GRPC.Client.Adapters.Gun do
   defp open(host, port, open_opts) do
     # note
     open_opts = case System.fetch_env!("ECTO_IPV6") do
-      "true" ->  update_in(open_opts, [:tcp_opts], [:inet6 | open_opts.tcp_opts])
+      "true" ->  put_in(open_opts, [:tcp_opts], [:inet6 | open_opts.tcp_opts])
       _ -> open_opts
     end
 
