@@ -89,6 +89,7 @@ defmodule GRPC.Client.Adapters.Gun do
     do: :gun.open_unix(socket_path, open_opts)
 
   defp open(host, port, open_opts) do
+    # note
     IO.inspect(open_opts)
       open_opts[:tcp_opts] = if(System.fetch_env!("ECTO_IPV6") == "true") do
           [:inet6 | open_opts[:tcp_opts]]
