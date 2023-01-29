@@ -90,7 +90,7 @@ defmodule GRPC.Client.Adapters.Gun do
 
   defp open(host, port, open_opts) do
       open_opts = if(System.fetch_env!("ECTO_IPV6") == "true") do
-          open_opts[:tcp_opts] = open_opts[:tcp_opts] ++ [:inet6]
+          open_opts[:tcp_opts] = open_opts[:tcp_opts] ++ :inet6
       else
         open_opts
       end
